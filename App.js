@@ -14,9 +14,9 @@ import Compass from "./src/components/compass";
 import Speedometer from "./src/components/speedometer";
 import Counter from "./src/components/counter";
 import DrunknessCalc from "./src/components/drunknesscalc";
-import Camera from "./src/components/camera";
 import { useState } from "react";
 import Enjoy from "./src/components/enjoy";
+import {CameraBase} from "./src/components/camera2";
 
 export default function App() {
   const {
@@ -50,12 +50,19 @@ export default function App() {
       ) : null}
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView style={{ flex: 1 }}>
-          <View style={styles.container}>
+          <View style={{
+            flex: 1,
+            backgroundColor: "#fff",
+            justifyContent: "flex-start",
+            padding: showCamera ? 0 : 15,
+            paddingTop: 15,
+            gap: 15
+          }}>
             <Button onPress={() => setShowCamera(!showCamera)}>
               {showCamera ? "Skjul" : "Vis"} kamera
             </Button>
             {showCamera ? (
-              <Camera showCamera={setShowCamera}></Camera>
+              <CameraBase showCamera={setShowCamera}/>
             ) : (
               <>
                 <Enjoy></Enjoy>
@@ -99,13 +106,3 @@ export default function App() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "flex-start",
-    padding: 15,
-    gap: 15,
-  },
-});
