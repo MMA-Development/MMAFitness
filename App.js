@@ -16,6 +16,7 @@ import Counter from "./src/components/counter";
 import DrunknessCalc from "./src/components/drunknesscalc";
 import Camera from "./src/components/camera";
 import { useState } from "react";
+import Enjoy from "./src/components/enjoy";
 
 export default function App() {
   const {
@@ -40,7 +41,7 @@ export default function App() {
             height: Dimensions.get("window").height,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "rgba(0, 0, 0, 0.2)",
+            backgroundColor: "rgba(255, 255, 255, 0.7)",
             zIndex: 999,
           }}
         >
@@ -57,6 +58,7 @@ export default function App() {
               <Camera showCamera={setShowCamera}></Camera>
             ) : (
               <>
+                <Enjoy></Enjoy>
                 <Counter
                   title="J-dag!!!"
                   text={"(Husk kondom)"}

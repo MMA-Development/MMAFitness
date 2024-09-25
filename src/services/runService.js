@@ -1,26 +1,11 @@
 import { Alert } from "react-native";
 import * as Location from "expo-location";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getDistance, getTotalRuntime } from "../utils/runUtils";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function useRun() {
   const [isRunning, setIsRunning] = useState(false);
-  const [runs, setRuns] = useState([
-    {
-      time: { minutes: 2, seconds: 2 },
-      distance: 2,
-      coords: [
-        { latitude: 55.380877, longitude: 10.412002 },
-        { latitude: 55.380522, longitude: 10.411959 },
-        { latitude: 55.380531, longitude: 10.411667 },
-        { latitude: 55.380575, longitude: 10.411656 },
-        { latitude: 55.380616, longitude: 10.410615 },
-        { latitude: 55.380927, longitude: 10.410656 },
-        { latitude: 55.380888, longitude: 10.41168 },
-      ],
-    },
-  ]);
+  const [runs, setRuns] = useState();
   const [locationInterval, setLocationInterval] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [currentRunHistory, setCurrentRunHistory] = useState([]);
@@ -49,6 +34,10 @@ export default function useRun() {
     );
   }
 
+  useEffect(() => {
+    getRuns();
+  }, []);
+
   async function stopRun() {
     setIsRunning(false);
     clearInterval(locationInterval);
@@ -59,14 +48,26 @@ export default function useRun() {
       created: new Date(),
     };
     setRuns([...runs, result]);
+    await saveRun(result);
   }
 
-  async function saveRuns(runs) {
-    await AsyncStorage.setItem("runs", JSON.stringify(runs));
+  async function saveRun(run) {
+    const result = await fetch("http://192.168.1.136:3000/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(run),
+    });
   }
 
   async function getRuns() {
-    return JSON.parse(await AsyncStorage.getItem("runs"));
+    const response = await fetch("http://192.168.1.136:3000");
+    if (!response.ok) return;
+
+    const json = await response.json();
+    setRuns(json);
   }
 
   return {
