@@ -8,6 +8,12 @@ export default function Button({ onPress, children }) {
         borderRadius: Number.MAX_SAFE_INTEGER,
         backgroundColor: "#00adef",
         padding: 15,
+        shadowColor: "#DDD",
+        shadowOpacity: 1,
+        shadowRadius: 10,
+        shadowOffset: {
+          height: 10,
+        },
       }}
       onPress={() => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);

@@ -6,7 +6,15 @@ import * as Haptics from "expo-haptics";
 import Header from "../header";
 
 export default function Compass() {
+  const [pStatus, setPStatus] = useState("");
   const [deg, setDeg] = useState("0");
+
+  useEffect(() => {
+    Location.requestForegroundPermissionsAsync().then(({ status }) => {
+      setPStatus(status);
+    });
+  }, []);
+
   function callback(props) {
     if (props.magHeading) {
       const val = Math.floor(props.magHeading);
@@ -19,6 +27,13 @@ export default function Compass() {
   useEffect(() => {
     const test = Location.watchHeadingAsync(callback);
   }, []);
+
+  if (pStatus !== "granted")
+    return (
+      <Card>
+        <Text>Du skal give tilladelse manner</Text>
+      </Card>
+    );
   return (
     <Card>
       <Header>Kompas</Header>

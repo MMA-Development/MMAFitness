@@ -11,6 +11,11 @@ import Header from "./src/components/header";
 import { getDistance } from "./src/utils/runUtils";
 import SpiritLevel from "./src/components/spiritLevel";
 import Compass from "./src/components/compass";
+import Speedometer from "./src/components/speedometer";
+import Counter from "./src/components/counter";
+import DrunknessCalc from "./src/components/drunknesscalc";
+import Camera from "./src/components/camera";
+import { useState } from "react";
 
 export default function App() {
   const {
@@ -22,6 +27,9 @@ export default function App() {
     starting,
     currentRunHistory,
   } = useRun();
+
+  const [showCamera, setShowCamera] = useState(false);
+
   return (
     <>
       {starting ? (
@@ -42,22 +50,47 @@ export default function App() {
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView style={{ flex: 1 }}>
           <View style={styles.container}>
-            <SpiritLevel></SpiritLevel>
-            <Compass></Compass>
-            <StepCard></StepCard>
-            {isRunning && (
-              <Card>
-                <Header>Nuværende løb:</Header>
-                <Text>{currentLocation.coords.speed * 3.6} km/h</Text>
-                <Text>{getDistance(currentRunHistory)}</Text>
-              </Card>
-            )}
-            {isRunning ? (
-              <Button onPress={stopRun}>Stop løb</Button>
+            <Button onPress={() => setShowCamera(!showCamera)}>
+              {showCamera ? "Skjul" : "Vis"} kamera
+            </Button>
+            {showCamera ? (
+              <Camera showCamera={setShowCamera}></Camera>
             ) : (
-              <Button onPress={startRun}>Start løb</Button>
+              <>
+                <Counter
+                  title="J-dag!!!"
+                  text={"(Husk kondom)"}
+                  to={new Date("2024-11-01")}
+                ></Counter>
+                <Counter
+                  title="Slå op med lillemor"
+                  text={"Lillemors termin"}
+                  to={new Date("2024-11-01")}
+                ></Counter>
+                <Counter
+                  title="Druk hos Ronnie"
+                  text={"Husk juleøl"}
+                  to={new Date("2024-12-24")}
+                ></Counter>
+                <DrunknessCalc></DrunknessCalc>
+                <SpiritLevel></SpiritLevel>
+                <Compass></Compass>
+                <StepCard></StepCard>
+                {isRunning && (
+                  <Card>
+                    <Header>Nuværende løb:</Header>
+                    <Text>{currentLocation.coords.speed * 3.6} km/h</Text>
+                    <Text>{getDistance(currentRunHistory)}</Text>
+                  </Card>
+                )}
+                {isRunning ? (
+                  <Button onPress={stopRun}>Stop løb</Button>
+                ) : (
+                  <Button onPress={startRun}>Start løb</Button>
+                )}
+                <OldRuns history={runs}></OldRuns>
+              </>
             )}
-            <OldRuns history={runs}></OldRuns>
           </View>
         </ScrollView>
       </SafeAreaView>
