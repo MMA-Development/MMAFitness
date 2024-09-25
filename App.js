@@ -1,4 +1,10 @@
-import { ActivityIndicator, ScrollView, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 import StepCard from "./src/components/stepcard";
 import useRun from "./src/services/runService";
 import Card from "./src/components/card";
@@ -14,9 +20,11 @@ import Compass from "./src/components/compass";
 import Speedometer from "./src/components/speedometer";
 import Counter from "./src/components/counter";
 import DrunknessCalc from "./src/components/drunknesscalc";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Enjoy from "./src/components/enjoy";
-import {CameraBase} from "./src/components/camera2";
+import { CameraBase } from "./src/components/camera2";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { BackgroundProvider } from "./src/hooks/backgroundImageContext";
 
 export default function App() {
   const {
@@ -32,7 +40,7 @@ export default function App() {
   const [showCamera, setShowCamera] = useState(false);
 
   return (
-    <>
+    <BackgroundProvider>
       {starting ? (
         <View
           style={{
@@ -48,21 +56,22 @@ export default function App() {
           <ActivityIndicator></ActivityIndicator>
         </View>
       ) : null}
-      <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView style={{ flex: 1 }}>
-          <View style={{
-            flex: 1,
-            backgroundColor: "#fff",
-            justifyContent: "flex-start",
-            padding: showCamera ? 0 : 15,
-            paddingTop: 15,
-            gap: 15
-          }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "transparent" }}>
+        <ScrollView style={{ flex: 1, backgroundColor: "transparent" }}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "flex-start",
+              padding: showCamera ? 0 : 15,
+              paddingTop: 15,
+              gap: 15,
+            }}
+          >
             <Button onPress={() => setShowCamera(!showCamera)}>
               {showCamera ? "Skjul" : "Vis"} kamera
             </Button>
             {showCamera ? (
-              <CameraBase showCamera={setShowCamera}/>
+              <CameraBase showCamera={setShowCamera} />
             ) : (
               <>
                 <Enjoy></Enjoy>
@@ -103,6 +112,6 @@ export default function App() {
           </View>
         </ScrollView>
       </SafeAreaView>
-    </>
+    </BackgroundProvider>
   );
 }

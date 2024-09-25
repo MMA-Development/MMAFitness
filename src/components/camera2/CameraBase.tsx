@@ -1,16 +1,14 @@
-import {CameraProvider} from './CameraContext';
-import {Camera} from './Camera';
+import { CameraProvider } from "./CameraContext";
+import { Camera } from "./Camera";
 
 interface CameraBaseProps {
-  showCamera: (show: boolean) => void
+  showCamera: (show: boolean) => void;
 }
 
-export function CameraBase({showCamera}: CameraBaseProps) {
-
+export function CameraBase({ showCamera }: CameraBaseProps) {
   return (
     <CameraProvider>
       <Camera showCamera={showCamera} />
     </CameraProvider>
-  )
-
+  );
 }
