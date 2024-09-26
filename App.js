@@ -25,6 +25,7 @@ import Enjoy from "./src/components/enjoy";
 import { CameraBase } from "./src/components/camera2";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BackgroundProvider } from "./src/hooks/backgroundImageContext";
+import useAppVMC from "./src/vmc/appVmc";
 
 export default function App() {
   const {
@@ -35,9 +36,9 @@ export default function App() {
     runs,
     starting,
     currentRunHistory,
-  } = useRun();
-
-  const [showCamera, setShowCamera] = useState(false);
+    showCamera,
+    setShowCamera,
+  } = useAppVMC();
 
   return (
     <BackgroundProvider>
@@ -74,17 +75,17 @@ export default function App() {
               <CameraBase showCamera={setShowCamera} />
             ) : (
               <>
-                <Enjoy></Enjoy>
+                {/* <Enjoy></Enjoy> */}
                 <Counter
                   title="J-dag!!!"
                   text={"(Husk kondom)"}
                   to={new Date("2024-11-01")}
                 ></Counter>
-                <Counter
+                {/* <Counter
                   title="Slå op med lillemor"
                   text={"Lillemors termin"}
                   to={new Date("2024-11-01")}
-                ></Counter>
+                ></Counter> */}
                 <Counter
                   title="Druk hos Ronnie"
                   text={"Husk juleøl"}
